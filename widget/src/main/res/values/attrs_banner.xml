@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DuBanner">
+        <attr name="time_interval" format="integer"/>
+        <attr name="color_default" format="color"/>
+        <attr name="color_selected" format="color"/>
+        <attr name="drawable_default" format="reference"/>
+        <attr name="drawable_selected" format="reference"/>
+        <attr name="auto_scroll" format="boolean"/>
+        <!-- indicator之间的间距 -->
+        <attr name="indicator_margin_between" format="dimension"/>
+        <!-- indicator距离外部布局的边距 -->
+        <attr name="indicator_margin_layout" format="dimension"/>
+        <attr name="indicator_edge" format="dimension"/>
+        <attr name="height_scale" format="float"/>
+    </declare-styleable>
+</resources>
