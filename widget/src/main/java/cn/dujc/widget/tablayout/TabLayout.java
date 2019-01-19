@@ -14,17 +14,21 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabLayout extends FrameLayout {
+import cn.dujc.widget.listener.OnDuItemClickListener;
 
-    private final List<CharSequence> mData = new ArrayList<>();
+public class TabLayout<T> extends FrameLayout {
+
+    private final List<T> mData = new ArrayList<>();
     private final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
             updatePosition(position);
         }
     };
+
+    private ITabFactory<T> mTabFactory = new DefaultTabFactoryImpl<T>();
     private RecyclerView mRecyclerView;
-    private TabAdapter mRecyclerAdapter;
+    private TabAdapter<T> mRecyclerAdapter;
     private ViewPager mViewPager;
 
     private int mPosition = 0;
@@ -61,26 +65,35 @@ public class TabLayout extends FrameLayout {
 
     private void init(Context context) {
         mRecyclerView = new RecyclerView(context);
-        mRecyclerAdapter = new TabAdapter(context, mData);
+        mRecyclerAdapter = new TabAdapter<T>(mData, mTabFactory);
         mRecyclerView.setLayoutManager(new LayoutManager(context));
         mRecyclerView.setAdapter(mRecyclerAdapter);
         addView(mRecyclerView);
 
-        mRecyclerAdapter.setOnItemClickListener(new RecyclerAdapter.OnRecyclerViewItemClickListener() {
+        mRecyclerAdapter.setOnDuItemClickListener(new OnDuItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onDuItemClickListener(View itemView, int position) {
                 updatePosition(position);
             }
         });
     }
 
+    public ITabFactory<T> getTabFactory() {
+        return mTabFactory;
+    }
+
+    public void setTabFactory(@NonNull ITabFactory<T> tabFactory) {
+        mTabFactory = tabFactory;
+        mRecyclerAdapter.setTabFactory(tabFactory);
+        mRecyclerAdapter.notifyDataSetChanged();
+    }
+
     /**
      * 更新选中状态
      */
-    private void updateItemState(int position, boolean click) {
+    private void updateItemState(int position) {
         if (position >= 0 && position < mRecyclerAdapter.getItemCount()) {
-            mData.get(position).setClick(click);
-            mRecyclerAdapter.notifyItemChanged(position);
+            mRecyclerAdapter.updateCurrentPosition(position);
         }
     }
 
@@ -89,15 +102,12 @@ public class TabLayout extends FrameLayout {
      */
     private void updatePosition(int position) {
         if (mPosition != position) {
-            updateItemState(mPosition, false);
             mPosition = position;
-            updateItemState(mPosition, true);
-        }
+            updateItemState(mPosition);
 
-        if (mViewPager != null && mViewPager.getAdapter() != null
-                && mViewPager.getCurrentItem() != mPosition
-                && mPosition >= 0 && mPosition < mViewPager.getAdapter().getCount()) {
-            mViewPager.setCurrentItem(mPosition);
+            if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getCurrentItem() != mPosition && mPosition >= 0 && mPosition < mViewPager.getAdapter().getCount()) {
+                mViewPager.setCurrentItem(mPosition);
+            }
         }
     }
 
@@ -105,7 +115,7 @@ public class TabLayout extends FrameLayout {
         return mRecyclerAdapter;
     }
 
-    public void setData(List<CharSequence> data) {
+    public void setData(List<T> data) {
         mData.clear();
         if (data != null) {
             mData.addAll(data);
@@ -121,7 +131,7 @@ public class TabLayout extends FrameLayout {
         }
     }
 
-    public void setDataAndViewPage(List<CharSequence> data, ViewPager viewPager) {
+    public void setDataAndViewPage(List<T> data, ViewPager viewPager) {
         setData(data);
         setViewPager(viewPager);
     }
@@ -136,8 +146,7 @@ public class TabLayout extends FrameLayout {
         public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
             final int count = getItemCount();
             //第一个和最后一个都完整地呈现，说明数据可能无法填满屏幕。所以均分每一项的宽度
-            if (findFirstCompletelyVisibleItemPosition() == 0
-                    && findLastCompletelyVisibleItemPosition() == count - 1) {
+            if (findFirstCompletelyVisibleItemPosition() == 0 && findLastCompletelyVisibleItemPosition() == count - 1) {
                 final int width = MeasureSpec.getSize(widthSpec) / count;
                 for (int index = 0; index < count; index++) {
                     final View child = findViewByPosition(index);

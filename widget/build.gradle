@@ -33,7 +33,7 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-    implementation 'cn.dujc:CoreApp:1.2.0-alpha6'
+    //implementation 'cn.dujc:CoreApp:1.2.0-alpha6'
 }
 
 //---------------------------------------------

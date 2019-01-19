@@ -1,6 +1,5 @@
 package cn.dujc.widget.banner;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 

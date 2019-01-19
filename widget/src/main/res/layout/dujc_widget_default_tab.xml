@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dujc_widget_tab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dujc_widget_tab_height"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dujc_widget_tab_padding_left"
+        android:paddingTop="@dimen/dujc_widget_tab_padding_top"
+        android:paddingRight="@dimen/dujc_widget_tab_padding_right"
+        android:paddingBottom="@dimen/dujc_widget_tab_padding_bottom"
+        android:text="@string/app_name"
+        android:textColor="@color/dujc_widget_tab_text_color"
+        android:textSize="@dimen/dujc_widget_tab_text_size" />
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dujc_widget_indicator_height"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:background="@color/dujc_widget_tab_indicator_color" />-->
+
+</FrameLayout>
