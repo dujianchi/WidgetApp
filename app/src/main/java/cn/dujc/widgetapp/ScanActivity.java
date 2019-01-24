@@ -60,6 +60,6 @@ public class ScanActivity extends AppCompatActivity implements ICaptureHandler {
     @Override
     public boolean handleDecode(String result) {
         Toast.makeText(this, "result = " + result, Toast.LENGTH_SHORT).show();
-        return true;
+        return false;
     }
 }

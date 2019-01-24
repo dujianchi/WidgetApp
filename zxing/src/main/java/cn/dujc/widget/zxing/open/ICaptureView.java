@@ -26,7 +26,10 @@ public interface ICaptureView extends ICaptureHandler {
 
     <T extends View> T findViewById(@IdRes int resId);
 
-    void setResult(int resultCode, Intent data);
+    /**
+     * 处理扫码结果，返回true则需要关闭扫码页
+     */
+    boolean setResult(int resultCode, Intent data);
 
     void finish();
 

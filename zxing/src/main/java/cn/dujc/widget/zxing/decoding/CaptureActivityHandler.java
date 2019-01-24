@@ -82,6 +82,9 @@ public final class CaptureActivityHandler extends Handler {
             if (result != null) {
                 if (mICaptureView.handleDecode(result.getText())) {
                     mICaptureView.finish();
+                } else {
+                    mICaptureView._onPause();
+                    mICaptureView._onResume();
                 }
             }
             /*---------------------------------------------------------------------*/
@@ -93,9 +96,12 @@ public final class CaptureActivityHandler extends Handler {
         } else if (message.what == R.id.widget_zxing_return_scan_result) {
             Log.d(TAG, "Got return scan result message");
             System.out.println("--------------- " + message.obj);
-            mICaptureView.setResult(Activity.RESULT_OK, (Intent) message.obj);
-            mICaptureView.finish();
-
+            if (mICaptureView.setResult(Activity.RESULT_OK, (Intent) message.obj)) {
+                mICaptureView.finish();
+            } else {
+                mICaptureView._onPause();
+                mICaptureView._onResume();
+            }
         }
     }
 

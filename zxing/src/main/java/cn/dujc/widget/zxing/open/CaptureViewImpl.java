@@ -19,10 +19,11 @@ public class CaptureViewImpl extends AbsCaptureViewImpl {
     }
 
     @Override
-    public void setResult(int resultCode, Intent data) {
+    public boolean setResult(int resultCode, Intent data) {
         if (mActivity != null) {
             mActivity.setResult(resultCode, data);
         }
+        return false;
     }
 
     @Override
