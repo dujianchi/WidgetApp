@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group='cn.dujc'
 
 android {
     compileSdkVersion Integer.valueOf("$compile_sdk_version")
