@@ -19,7 +19,7 @@ public class ScanActivity extends AppCompatActivity implements ICaptureHandler {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCaptureView = new CaptureViewImpl(this, null, this);
+        mCaptureView = new CaptureViewImpl(this, this);
         setContentView(mCaptureView.getViewId());
         mCaptureView._onCreateAfterSetupView();
     }

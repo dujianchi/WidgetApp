@@ -3,65 +3,61 @@ package cn.dujc.widget.zxing.open;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 public class CaptureViewImpl extends AbsCaptureViewImpl {
 
-    private final Activity mActivity;
-    private final Fragment mFragment;
+    @NonNull
+    private final IVew mIVew;
+    @NonNull
     private final ICaptureResult mCaptureResult;
 
-    public CaptureViewImpl(Activity activity, Fragment fragment, ICaptureResult captureResult) {
-        mActivity = activity;
-        mFragment = fragment;
+    public CaptureViewImpl(@NonNull Activity activity, @NonNull ICaptureResult captureResult) {
+        this(new ActivityImpl(activity), captureResult);
+    }
+
+    public CaptureViewImpl(@NonNull IVew iVew, @NonNull ICaptureResult captureResult) {
+        mIVew = iVew;
         mCaptureResult = captureResult;
     }
 
     @Override
     public boolean setResult(int resultCode, Intent data) {
-        if (mActivity != null) {
-            mActivity.setResult(resultCode, data);
+        if (mIVew.getActivity() != null) {
+            mIVew.getActivity().setResult(resultCode, data);
         }
         return false;
     }
 
     @Override
     public void finish() {
-        System.out.println("--------------   " + mActivity + " is finishing");
-        if (mActivity != null) {
-            mActivity.finish();
+        if (mIVew.getActivity() != null) {
+            mIVew.getActivity().finish();
         }
     }
 
     @Override
     public Application getApplication() {
-        if (mActivity != null) {
-            return mActivity.getApplication();
+        if (mIVew.getActivity() != null) {
+            return mIVew.getActivity().getApplication();
         }
         return null;
     }
 
     @Override
     public Activity getActivity() {
-        return mActivity;
+        return mIVew.getActivity();
     }
 
     @Override
-    public <T extends View> T findViewById(int resId) {
-        if (mFragment != null && mFragment.getView() != null) {
-            return mFragment.getView().findViewById(resId);
-        } else if (mActivity != null) {
-            return mActivity.findViewById(resId);
-        }
-        return null;
+    public <T extends View> T findViewById(@IdRes int resId) {
+        return mIVew.findViewById(resId);
     }
 
     @Override
     public boolean handleDecode(String result) {
-        if (mCaptureResult != null) {
-            return mCaptureResult.handleDecode(result);
-        }
-        return false;
+        return mCaptureResult.handleDecode(result);
     }
 }
