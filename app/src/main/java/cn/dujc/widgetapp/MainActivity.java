@@ -1,7 +1,9 @@
 package cn.dujc.widgetapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.Arrays;
 
@@ -19,5 +21,9 @@ public class MainActivity extends AppCompatActivity {
                 //, "bbb", "ccc", "bbb", "ccc", "bbb", "ccc", "bbb", "ccc", "bbb", "ccc", "bbb", "ccc"
         ));
 
+    }
+
+    public void scanQR(View view) {
+        startActivity(new Intent(this, ScanActivity.class));
     }
 }
