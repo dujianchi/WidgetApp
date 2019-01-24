@@ -50,10 +50,10 @@ final class DecodeHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-        if (message.what == R.id.decode) {//Log.d(TAG, "Got decode message");
+        if (message.what == R.id.widget_zxing_decode) {//Log.d(TAG, "Got decode message");
             decode((byte[]) message.obj, message.arg1, message.arg2);
 
-        } else if (message.what == R.id.quit) {
+        } else if (message.what == R.id.widget_zxing_quit) {
             Looper.myLooper().quit();
 
         }
@@ -94,11 +94,11 @@ final class DecodeHandler extends Handler {
         if (rawResult != null) {
             long end = System.currentTimeMillis();
             Log.d(TAG, "Found barcode (" + (end - start) + " ms):\n" + rawResult.toString());
-            Message message = Message.obtain(mICaptureView.getHandler(), R.id.decode_succeeded, rawResult);
+            Message message = Message.obtain(mICaptureView.getHandler(), R.id.widget_zxing_decode_succeeded, rawResult);
             //Log.d(TAG, "Sending decode succeeded message...");
             message.sendToTarget();
         } else {
-            Message message = Message.obtain(mICaptureView.getHandler(), R.id.decode_failed);
+            Message message = Message.obtain(mICaptureView.getHandler(), R.id.widget_zxing_decode_failed);
             message.sendToTarget();
         }
     }

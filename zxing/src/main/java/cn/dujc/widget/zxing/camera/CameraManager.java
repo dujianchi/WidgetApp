@@ -243,7 +243,7 @@ public final class CameraManager {
 			}*/
             //改变宽高计算方式
             int min = screenResolution.x < screenResolution.y ? screenResolution.x : screenResolution.y;//取最小边做基准
-            int width = min / 2;//宽度为最小边的3/4
+            int width = min * 3 / 4;//宽度为最小边的3/4
             int height = width = width < MIN_FRAME_WIDTH ? MIN_FRAME_WIDTH : width;//宽度不能少于预设的最小宽度
             //int height = width;//高度与宽度统一
 

@@ -23,7 +23,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -58,11 +57,11 @@ public final class ViewfinderView extends View {
     /**
      * 四个绿色边角对应的宽度
      */
-    private static final int CORNER_WIDTH = 10;
+    private static final int CORNER_WIDTH = 4;
     /**
      * 扫描框中的中间线的宽度
      */
-    private static final int MIDDLE_LINE_WIDTH = 6;
+    private static final int MIDDLE_LINE_WIDTH = 3;
 
     /**
      * 扫描框中的中间线的与扫描框左右的间隙
@@ -81,7 +80,7 @@ public final class ViewfinderView extends View {
     /**
      * 字体大小
      */
-    private static final int TEXT_SIZE = 17;
+    private static final int TEXT_SIZE = 13;
     /**
      * 字体距离扫描框下面的距离
      */
@@ -125,9 +124,9 @@ public final class ViewfinderView extends View {
         paint = new Paint();
         Resources resources = getResources();
         //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        maskColor = resources.getColor(R.color.viewfinder_mask);
-        resultColor = resources.getColor(R.color.result_view);
-        resultPointColor = resources.getColor(R.color.possible_result_points);
+        maskColor = resources.getColor(R.color.widget_zxing_viewfinder_mask);
+        resultColor = resources.getColor(R.color.widget_zxing_result_view);
+        resultPointColor = resources.getColor(R.color.widget_zxing_possible_result_points);
         /*}else{
             Resources.Theme theme = getContext().getTheme();
             maskColor = resources.getColor(R.color.viewfinder_mask, theme);
@@ -159,8 +158,13 @@ public final class ViewfinderView extends View {
         }
 
         //获取屏幕的宽和高
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
+        int width = getWidth();
+        int height = getHeight();
+        final int mistake = frame.bottom + frame.top - height;//错误计算
+        if (mistake > 0) {
+            frame.top -= mistake;
+            frame.bottom -= mistake;
+        }
 
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
 
@@ -172,7 +176,6 @@ public final class ViewfinderView extends View {
                 paint);
         canvas.drawRect(0, frame.bottom + 1, width, height, paint);
 
-
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             paint.setAlpha(OPAQUE);
@@ -181,7 +184,7 @@ public final class ViewfinderView extends View {
 
             //画扫描框边上的角，总共8个部分
 //      paint.setColor(Color.GREEN);
-            paint.setColor(ContextCompat.getColor(getContext(), R.color.viewfinder_laser));
+            paint.setColor(ContextCompat.getColor(getContext(), R.color.widget_zxing_viewfinder_laser));
 
             canvas.drawRect(frame.left - CORNER_WIDTH, frame.top - CORNER_WIDTH, frame.left + ScreenRate,
                     frame.top, paint);

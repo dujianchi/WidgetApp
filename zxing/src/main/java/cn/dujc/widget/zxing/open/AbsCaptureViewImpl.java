@@ -78,13 +78,13 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
 
     @Override
     public int getViewId(){
-        return R.layout.activity_capture;
+        return R.layout.widget_zxing_layout_capture;
     }
 
     @Override
     public void _onCreateAfterSetupView() {
         CameraManager.init(getApplication());
-        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        viewfinderView = (ViewfinderView) findViewById(R.id.widget_zxing_viewfinder_view);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(getActivity());
     }
@@ -96,7 +96,7 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
 
     @Override
     public void _onResume() {
-        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.widget_zxing_preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             initCamera(surfaceHolder);

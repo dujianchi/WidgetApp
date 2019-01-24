@@ -4,14 +4,13 @@
     android:layout_height="match_parent">
 
     <SurfaceView
-        android:id="@+id/preview_view"
+        android:id="@+id/widget_zxing_preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <cn.dujc.widget.zxing.view.ViewfinderView
-        android:id="@+id/viewfinder_view"
+        android:id="@+id/widget_zxing_viewfinder_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
