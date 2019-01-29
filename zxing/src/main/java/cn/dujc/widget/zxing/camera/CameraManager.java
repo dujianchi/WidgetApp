@@ -130,14 +130,6 @@ public final class CameraManager {
                 configManager.initFromCameraParameters(camera);
             }
             configManager.setDesiredCameraParameters(camera);
-
-            //FIXME
-            //     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            //是否使用前灯
-//      if (prefs.getBoolean(PreferencesActivity.KEY_FRONT_LIGHT, false)) {
-//        FlashlightManager.enableFlashlight();
-//      }
-            FlashlightManager.enableFlashlight();
         }
     }
 
@@ -146,7 +138,6 @@ public final class CameraManager {
      */
     public void closeDriver() {
         if (camera != null) {
-            FlashlightManager.disableFlashlight();
             camera.release();
             camera = null;
         }
@@ -337,4 +328,13 @@ public final class CameraManager {
         return context;
     }
 
+    public void flashLight(boolean on) {//关闭闪光灯
+        if (camera != null) {
+            Camera.Parameters parameter = camera.getParameters();
+            if (parameter != null) {
+                parameter.setFlashMode(on ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
+                camera.setParameters(parameter);
+            }
+        }
+    }
 }

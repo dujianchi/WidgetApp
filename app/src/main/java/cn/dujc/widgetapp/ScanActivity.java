@@ -1,12 +1,14 @@
 package cn.dujc.widgetapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import cn.dujc.widget.zxing.camera.CameraManager;
 import cn.dujc.widget.zxing.open.CaptureViewImpl;
 import cn.dujc.widget.zxing.open.ICaptureHandler;
 import cn.dujc.widget.zxing.open.ICaptureView;
@@ -15,6 +17,7 @@ import cn.dujc.widget.zxing.view.ViewfinderView;
 public class ScanActivity extends AppCompatActivity implements ICaptureHandler {
 
     private ICaptureView mCaptureView;
+    private boolean on = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +25,18 @@ public class ScanActivity extends AppCompatActivity implements ICaptureHandler {
         mCaptureView = new CaptureViewImpl(this, this);
         setContentView(mCaptureView.getViewId());
         mCaptureView._onCreateAfterSetupView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("flash light");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        CameraManager.get().flashLight(on = !on);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
