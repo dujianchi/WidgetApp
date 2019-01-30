@@ -83,8 +83,7 @@ public final class CaptureActivityHandler extends Handler {
                 if (mICaptureView.handleDecode(result.getText())) {
                     mICaptureView.finish();
                 } else {
-                    mICaptureView._onPause();
-                    mICaptureView._onResume();
+                    mICaptureView.onCustomResult();
                 }
             }
             /*---------------------------------------------------------------------*/

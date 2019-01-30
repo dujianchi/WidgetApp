@@ -24,6 +24,11 @@ public interface ICaptureView extends ICaptureHandler, IVew {
      */
     boolean setResult(int resultCode, Intent data);
 
+    /**
+     * 当{@link #setResult(int, Intent)}返回false，则调用这个方法，这个方法需要自己处理接收结果后的操作
+     */
+    void onCustomResult();
+
     void finish();
 
 //    void startActivity(Intent intent);

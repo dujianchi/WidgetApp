@@ -46,7 +46,8 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -77,7 +78,7 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
     }
 
     @Override
-    public int getViewId(){
+    public int getViewId() {
         return R.layout.widget_zxing_layout_capture;
     }
 
@@ -134,6 +135,12 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
             handler = null;
         }
         CameraManager.get().closeDriver();
+    }
+
+    @Override
+    public void onCustomResult() {
+        _onPause();
+        _onResume();
     }
 
 //	private void initBeepSound() {
