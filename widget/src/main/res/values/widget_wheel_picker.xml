@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="widget_wheel_item_text_size">24sp</dimen>
+    <dimen name="widget_wheel_item_space">12dp</dimen>
+    <dimen name="widget_wheel_indicator_size">2dp</dimen>
+    <dimen name="widget_wheel_margins">8dp</dimen>
+
+    <color name="widget_wheel_selected_item_text_color">#FF555555</color>
+    <color name="widget_wheel_item_text_color">#FF888888</color>
+    <color name="widget_wheel_indicator_color">#FFEE3333</color>
+    <color name="widget_wheel_curtain_color">#88FFFFFF</color>
+
+    <integer name="widget_wheel_visible_item_count">7</integer>
+
+    <declare-styleable name="WheelPicker">
+        <attr name="widget_wheel_data" format="reference" />
+        <attr name="widget_wheel_selected_item_position" format="integer" />
+        <attr name="widget_wheel_item_text_size" format="dimension" />
+        <attr name="widget_wheel_item_text_color" format="color" />
+        <attr name="widget_wheel_selected_item_text_color" format="color" />
+        <attr name="widget_wheel_same_width" format="boolean" />
+        <attr name="widget_wheel_maximum_width_text" format="string" />
+        <attr name="widget_wheel_maximum_width_text_position" format="integer" />
+        <attr name="widget_wheel_visible_item_count" format="integer" />
+        <attr name="widget_wheel_item_space" format="dimension" />
+        <attr name="widget_wheel_cyclic" format="boolean" />
+        <attr name="widget_wheel_indicator" format="boolean" />
+        <attr name="widget_wheel_indicator_color" format="color" />
+        <attr name="widget_wheel_indicator_size" format="dimension" />
+        <attr name="widget_wheel_curtain" format="boolean" />
+        <attr name="widget_wheel_curtain_color" format="color" />
+        <attr name="widget_wheel_atmospheric" format="boolean" />
+        <attr name="widget_wheel_curved" format="boolean" />
+        <attr name="widget_wheel_item_align" format="enum">
+            <enum name="center" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <attr name="widget_wheel_font_path" format="string" />
+    </declare-styleable>
+
+</resources>

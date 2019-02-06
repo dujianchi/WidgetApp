@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="widget_banner_irregular_indicator_long">10dp</dimen>
+    <dimen name="widget_banner_irregular_indicator_short">5dp</dimen>
+
+    <color name="widget_banner_indicator_selected">@color/colorPrimary</color>
+    <color name="widget_banner_indicator_default">#666666</color>
+
+    <declare-styleable name="DuBanner">
+        <attr name="widget_time_interval" format="integer" />
+        <attr name="widget_color_default" format="color" />
+        <attr name="widget_color_selected" format="color" />
+        <attr name="widget_drawable_default" format="reference" />
+        <attr name="widget_drawable_selected" format="reference" />
+        <attr name="widget_auto_scroll" format="boolean" />
+        <!-- indicator之间的间距 -->
+        <attr name="widget_indicator_margin_between" format="dimension" />
+        <!-- indicator距离外部布局的边距 -->
+        <attr name="widget_indicator_margin_layout" format="dimension" />
+        <attr name="widget_indicator_edge" format="dimension" />
+        <attr name="widget_height_scale" format="float" />
+    </declare-styleable>
+
+</resources>

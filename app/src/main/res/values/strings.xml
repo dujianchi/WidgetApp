@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WidgetApp</string>
+    <string-array name="aaa">
+        <item>aaaa</item>
+        <item>aaaa</item>
+        <item>aaaa</item>
+        <item>aaaa</item>
+        <item>aaaa</item>
+        <item>aaaa</item>
+    </string-array>
 </resources>

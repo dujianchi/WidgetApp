@@ -34,10 +34,10 @@ public class IrregularIndicator extends LinearLayout implements DuBannerIndicato
         super(context, attrs);
         setOrientation(HORIZONTAL);
         final Resources resources = context.getResources();
-        mLongEdge = resources.getDimensionPixelOffset(R.dimen.dujc_widget_banner_irregular_indicator_long);
-        mShortEdge = resources.getDimensionPixelOffset(R.dimen.dujc_widget_banner_irregular_indicator_short);
-        mSelectedDrawable = ContextCompat.getDrawable(context, R.drawable.dujc_widget_banner_irregular_selected);
-        mDefaultDrawable = ContextCompat.getDrawable(context, R.drawable.dujc_widget_banner_irregular_default);
+        mLongEdge = resources.getDimensionPixelOffset(R.dimen.widget_banner_irregular_indicator_long);
+        mShortEdge = resources.getDimensionPixelOffset(R.dimen.widget_banner_irregular_indicator_short);
+        mSelectedDrawable = ContextCompat.getDrawable(context, R.drawable.widget_banner_irregular_selected);
+        mDefaultDrawable = ContextCompat.getDrawable(context, R.drawable.widget_banner_irregular_default);
     }
 
     @Override

@@ -26,4 +26,8 @@ public class MainActivity extends AppCompatActivity {
     public void scanQR(View view) {
         startActivity(new Intent(this, ScanActivity.class));
     }
+
+    public void wheelPicker(View view) {
+        startActivity(new Intent(this, WheelPickerActivity.class));
+    }
 }

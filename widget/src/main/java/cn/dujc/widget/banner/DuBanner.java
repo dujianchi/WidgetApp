@@ -111,18 +111,18 @@ public class DuBanner extends FrameLayout {
         int colorDefault = 0xff2222, colorSelected = 0xcccccc;
         if (attrs != null) {
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.DuBanner);
-            mTimeInterval = array.getInt(R.styleable.DuBanner_time_interval, mTimeInterval);
-            drawableDefault = array.getDrawable(R.styleable.DuBanner_drawable_default);
-            drawableSelected = array.getDrawable(R.styleable.DuBanner_drawable_selected);
+            mTimeInterval = array.getInt(R.styleable.DuBanner_widget_time_interval, mTimeInterval);
+            drawableDefault = array.getDrawable(R.styleable.DuBanner_widget_drawable_default);
+            drawableSelected = array.getDrawable(R.styleable.DuBanner_widget_drawable_selected);
             if (drawableDefault == null && drawableSelected == null) {
-                colorDefault = array.getColor(R.styleable.DuBanner_color_default, colorDefault);
-                colorSelected = array.getColor(R.styleable.DuBanner_color_selected, colorSelected);
+                colorDefault = array.getColor(R.styleable.DuBanner_widget_color_default, colorDefault);
+                colorSelected = array.getColor(R.styleable.DuBanner_widget_color_selected, colorSelected);
             }
-            mAutoScroll = array.getBoolean(R.styleable.DuBanner_auto_scroll, mAutoScroll);
-            indicatorMarginBetween = array.getDimensionPixelOffset(R.styleable.DuBanner_indicator_margin_between, indicatorMarginBetween);
-            mIndicatorMarginLayout = array.getDimensionPixelOffset(R.styleable.DuBanner_indicator_margin_layout, mIndicatorMarginLayout);
-            indicatorEdge = array.getDimensionPixelOffset(R.styleable.DuBanner_indicator_edge, indicatorEdge);
-            mHeightScale = array.getFloat(R.styleable.DuBanner_height_scale, mHeightScale);
+            mAutoScroll = array.getBoolean(R.styleable.DuBanner_widget_auto_scroll, mAutoScroll);
+            indicatorMarginBetween = array.getDimensionPixelOffset(R.styleable.DuBanner_widget_indicator_margin_between, indicatorMarginBetween);
+            mIndicatorMarginLayout = array.getDimensionPixelOffset(R.styleable.DuBanner_widget_indicator_margin_layout, mIndicatorMarginLayout);
+            indicatorEdge = array.getDimensionPixelOffset(R.styleable.DuBanner_widget_indicator_edge, indicatorEdge);
+            mHeightScale = array.getFloat(R.styleable.DuBanner_widget_height_scale, mHeightScale);
             array.recycle();
         }
         if (indicatorMarginBetween == 0) indicatorMarginBetween = indicatorEdge;

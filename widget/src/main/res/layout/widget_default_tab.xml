@@ -6,21 +6,21 @@
     <TextView
         android:id="@+id/dujc_widget_tab_text"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dujc_widget_tab_height"
+        android:layout_height="@dimen/widget_tab_height"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingLeft="@dimen/dujc_widget_tab_padding_left"
-        android:paddingTop="@dimen/dujc_widget_tab_padding_top"
-        android:paddingRight="@dimen/dujc_widget_tab_padding_right"
-        android:paddingBottom="@dimen/dujc_widget_tab_padding_bottom"
+        android:paddingLeft="@dimen/widget_tab_padding_left"
+        android:paddingTop="@dimen/widget_tab_padding_top"
+        android:paddingRight="@dimen/widget_tab_padding_right"
+        android:paddingBottom="@dimen/widget_tab_padding_bottom"
         android:text="@string/app_name"
-        android:textColor="@color/dujc_widget_tab_text_color"
-        android:textSize="@dimen/dujc_widget_tab_text_size" />
+        android:textColor="@color/widget_tab_text_color"
+        android:textSize="@dimen/widget_tab_text_size" />
 
     <!--<View-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="@dimen/dujc_widget_indicator_height"-->
     <!--android:layout_gravity="bottom"-->
-    <!--android:background="@color/dujc_widget_tab_indicator_color" />-->
+    <!--android:background="@color/widget_tab_indicator_color" />-->
 
 </FrameLayout>

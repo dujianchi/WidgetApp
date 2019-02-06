@@ -1,7 +1,6 @@
 package cn.dujc.widget.tablayout;
 
 import android.support.annotation.NonNull;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ public class DefaultTabFactoryImpl<T> implements ITabFactory<T> {
         @Override
         public View getView(@NonNull ViewGroup parent, int viewType) {
             if (mItemView == null) {
-                mItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dujc_widget_default_tab, parent, false);
+                mItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_default_tab, parent, false);
                 mItemTextView = mItemView.findViewById(R.id.dujc_widget_tab_text);
             }
             return mItemView;
