@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import cn.dujc.widget.wheelpicker.WheelPicker;
 import cn.dujc.widgetapp.address.AddressSQLHelper;
 import cn.dujc.widgetapp.address.IAddress;
 import cn.dujc.widgetapp.address.OnParseDone;
-import cn.dujc.widgetapp.address.Parser;
+import cn.dujc.widgetapp.address.ParserUtil;
 
 /**
  * @author du
@@ -33,6 +32,8 @@ public class WheelPickerActivity extends AppCompatActivity {
         mWpProvince = (WheelPicker) findViewById(R.id.wp_province);
         mWpCity = (WheelPicker) findViewById(R.id.wp_city);
         mWpDistrict = (WheelPicker) findViewById(R.id.wp_district);
+
+        mSQLHelper = new AddressSQLHelper(this);
 
         mWpProvince.setOnItemSelectedListener(new IWheelPicker.OnItemSelectedListener() {
             @Override
@@ -59,19 +60,34 @@ public class WheelPickerActivity extends AppCompatActivity {
                 mWpDistrict.setSelectedItemPosition(0, false);
             }
         });
-        try {
-            Parser.get().syncXml(this
-                    , "1.0.0"
-                    , getResources().getAssets().open("area.xml")
-                    , new OnParseDone() {
-                        @Override
-                        public void onParseDone(AddressSQLHelper helper) {
-                            mSQLHelper = helper;
-                            mWpProvince.setData(helper.getProvinces());
+        ParserUtil.get().update(this
+                , "http://image.zhensuotong.com/uploadfiles/areafile/area.xml"
+                , null
+                , new OnParseDone() {
+                    @Override
+                    public void onParseDone(boolean success) {
+                        List<IAddress> provinces = mSQLHelper.getProvinces();
+                        mWpProvince.setData(provinces);
+                        if (provinces != null && provinces.size() > 0) {
+                            IAddress province = provinces.get(0);
+                            List<IAddress> cities = mSQLHelper.getCities(province.getId());
+                            mWpCity.setData(cities);
+                            mWpCity.setSelectedItemPosition(0, false);
+                            if (cities != null && cities.size() > 0) {
+                                IAddress city = cities.get(0);
+                                mWpDistrict.setData(mSQLHelper.getDistricts(city.getId()));
+                                mWpDistrict.setSelectedItemPosition(0, false);
+                            } else {
+                                mWpDistrict.setData(Collections.emptyList());
+                                mWpDistrict.setSelectedItemPosition(0, false);
+                            }
+                        } else {
+                            mWpCity.setData(Collections.emptyList());
+                            mWpCity.setSelectedItemPosition(0, false);
+                            mWpDistrict.setData(Collections.emptyList());
+                            mWpDistrict.setSelectedItemPosition(0, false);
                         }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    }
+                });
     }
 }

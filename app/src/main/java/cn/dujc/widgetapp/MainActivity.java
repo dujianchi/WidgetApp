@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 import cn.dujc.widget.tablayout.TabLayout;
-import cn.dujc.widgetapp.address.AddressSQLHelper;
 import cn.dujc.widgetapp.address.OnParseDone;
-import cn.dujc.widgetapp.address.Parser;
+import cn.dujc.widgetapp.address.ParserUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void address(View view) {
         try {
-            InputStream open = getResources().getAssets().open("area.xml");
-            Parser.get().syncXml(this, "1.0.0", open, new OnParseDone() {
+            ParserUtil.get().update(this,"http://image.zhensuotong.com/uploadfiles/areafile/area.xml", "1.0.0", new OnParseDone() {
                 @Override
-                public void onParseDone(AddressSQLHelper helper) {
+                public void onParseDone(boolean success) {
 
                 }
             });
