@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
  */
 public class AddressSQLHelper extends SQLiteOpenHelper {
 
-    private static final Handler HANDLER = new Handler(Looper.getMainLooper());
-    private static final Executor EXECUTOR = Executors.newFixedThreadPool(2);
+    static final Handler HANDLER = new Handler(Looper.getMainLooper());
+    static final Executor EXECUTOR = Executors.newFixedThreadPool(2);
 
     private static final int VERSION = 1;
     private static final String TABLE_PROVINCE = "province", TABLE_CITY = "city", TABLE_DISTRICT = "district";

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void address(View view) {
         try {
-            ParserUtil.get().update(this,"http://image.zhensuotong.com/uploadfiles/areafile/area.xml", "1.0.0", new OnParseDone() {
+            ParserUtil.get().update(this,"http://image.zhensuotong.com/uploadfiles/areafile/area.xml", "1.0.1", new OnParseDone() {
                 @Override
                 public void onParseDone(boolean success) {
 

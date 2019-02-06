@@ -31,7 +31,7 @@ public class ParserUtil {
 
     private ParserUtil() {}
 
-    public void update(Context context, String url, String newVersion, @Nullable OnParseDone onParseDone) {
+    public void update(final Context context, final String url, final String newVersion, @Nullable final OnParseDone onParseDone) {
         String oldVersion = new AddressSQLHelper(context).getVersionName();
         if (TextUtils.isEmpty(oldVersion)) {
             //当数据库中的版本号为空，说明没有数据，则先从本地xml读取一份
@@ -48,30 +48,45 @@ public class ParserUtil {
             if (onParseDone != null) onParseDone.onParseDone(true);
             return;
         }//当新旧版本号不一致，则下载xml，并将其替换进数据库
-        final HttpURLConnection connection = createByUrl(url);
-        if (connection != null) {
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setUseCaches(false);
-            try {
-                connection.setRequestMethod("GET");
-            } catch (Exception e) {
-                e.printStackTrace();
+        AddressSQLHelper.EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                final int timeout = 20 * 1000;
+                final HttpURLConnection connection = createByUrl(url);
+                if (connection != null) {
+                    connection.setDoInput(true);
+                    //connection.setDoOutput(true);
+                    connection.setUseCaches(false);
+                    connection.setConnectTimeout(timeout);
+                    connection.setReadTimeout(timeout);
+                    try {
+                        connection.setRequestMethod("GET");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        connection.connect();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        final InputStream inputStream = connection.getInputStream();
+                        syncXml(context, inputStream, newVersion, onParseDone);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (onParseDone != null) {
+                            AddressSQLHelper.HANDLER.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onParseDone.onParseDone(false);
+                                }
+                            });
+                        }
+                    }
+                    connection.disconnect();
+                }
             }
-            try {
-                connection.connect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                final InputStream inputStream = connection.getInputStream();
-                syncXml(context, inputStream, newVersion, onParseDone);
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (onParseDone != null) onParseDone.onParseDone(false);
-            }
-            connection.disconnect();
-        }
+        });
     }
 
     private void syncXml(Context context, InputStream xml, String version, OnParseDone onParseDone) {
