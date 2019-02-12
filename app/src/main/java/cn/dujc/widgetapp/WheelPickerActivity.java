@@ -62,7 +62,7 @@ public class WheelPickerActivity extends AppCompatActivity {
         });
         ParserUtil.get().update(this
                 , "http://image.zhensuotong.com/uploadfiles/areafile/area.xml"
-                , "1.0.1"
+                , "1.8"
                 , new OnParseDone() {
                     @Override
                     public void onParseDone(boolean success) {

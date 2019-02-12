@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -38,20 +39,6 @@ import cn.dujc.widget.R;
  * @version 1.1.0
  */
 public class WheelPicker extends View implements IWheelPicker, Runnable {
-    /**
-     * 滚动状态标识值
-     *
-     * @see OnWheelChangeListener#onWheelScrollStateChanged(int)
-     */
-    public static final int SCROLL_STATE_IDLE = 0, SCROLL_STATE_DRAGGING = 1,
-            SCROLL_STATE_SCROLLING = 2;
-
-    /**
-     * 数据项对齐方式标识值
-     *
-     * @see #setItemAlign(int)
-     */
-    public static final int ALIGN_CENTER = 0, ALIGN_LEFT = 1, ALIGN_RIGHT = 2;
 
     //private static final String TAG = WheelPicker.class.getSimpleName();
 
@@ -159,6 +146,13 @@ public class WheelPicker extends View implements IWheelPicker, Runnable {
      * @see #setItemAlign(int)
      */
     private int mItemAlign;
+
+    /**
+     * 文字的显示效果
+     *
+     * @see #setTextEllipsize(int)
+     */
+    private int mTextEllipsize;
 
     /**
      * 滚轮选择器单个数据项高度以及单个数据项一半的高度
@@ -323,6 +317,7 @@ public class WheelPicker extends View implements IWheelPicker, Runnable {
         mHasAtmospheric = a.getBoolean(R.styleable.WheelPicker_widget_wheel_atmospheric, false);
         mIsCurved = a.getBoolean(R.styleable.WheelPicker_widget_wheel_curved, false);
         mItemAlign = a.getInt(R.styleable.WheelPicker_widget_wheel_item_align, ALIGN_CENTER);
+        mTextEllipsize = a.getInt(R.styleable.WheelPicker_widget_wheel_ellipsize, NONE);
         mFontPath = a.getString(R.styleable.WheelPicker_widget_wheel_font_path);
         a.recycle();
 
@@ -625,20 +620,20 @@ public class WheelPicker extends View implements IWheelPicker, Runnable {
                 canvas.save();
                 if (mIsCurved) canvas.concat(mMatrixRotate);
                 canvas.clipRect(mRectCurrentItem, Region.Op.DIFFERENCE);
-                canvas.drawText(data, mDrawnCenterX, drawnCenterY, mPaint);
+                canvas.drawText(computeDecentString(data), mDrawnCenterX, drawnCenterY, mPaint);
                 canvas.restore();
 
                 mPaint.setColor(mSelectedItemTextColor);
                 canvas.save();
                 if (mIsCurved) canvas.concat(mMatrixRotate);
                 canvas.clipRect(mRectCurrentItem);
-                canvas.drawText(data, mDrawnCenterX, drawnCenterY, mPaint);
+                canvas.drawText(computeDecentString(data), mDrawnCenterX, drawnCenterY, mPaint);
                 canvas.restore();
             } else {
                 canvas.save();
                 canvas.clipRect(mRectDrawn);
                 if (mIsCurved) canvas.concat(mMatrixRotate);
-                canvas.drawText(data, mDrawnCenterX, drawnCenterY, mPaint);
+                canvas.drawText(computeDecentString(data), mDrawnCenterX, drawnCenterY, mPaint);
                 canvas.restore();
             }
             //if (isDebug) {
@@ -678,6 +673,25 @@ public class WheelPicker extends View implements IWheelPicker, Runnable {
         //    canvas.drawRect(getWidth() - getPaddingRight(), 0, getWidth(), getHeight(), mPaint);
         //    canvas.drawRect(0, getHeight() - getPaddingBottom(), getWidth(), getHeight(), mPaint);
         //}
+    }
+
+    /**
+     * 计算合适的字符串
+     */
+    private String computeDecentString(String data) {
+        if (TextUtils.isEmpty(data)) return "";
+        switch (mTextEllipsize) {
+            case END:
+                return TextUtils.ellipsize(data, new TextPaint(mPaint), getWidth() - getPaddingLeft() - getPaddingRight(), TextUtils.TruncateAt.END).toString();
+            case MARQUEE:
+                return TextUtils.ellipsize(data, new TextPaint(mPaint), getWidth() - getPaddingLeft() - getPaddingRight(), TextUtils.TruncateAt.MARQUEE).toString();
+            case MIDDLE:
+                return TextUtils.ellipsize(data, new TextPaint(mPaint), getWidth() - getPaddingLeft() - getPaddingRight(), TextUtils.TruncateAt.MIDDLE).toString();
+            case START:
+                return TextUtils.ellipsize(data, new TextPaint(mPaint), getWidth() - getPaddingLeft() - getPaddingRight(), TextUtils.TruncateAt.START).toString();
+            default:
+                return data;
+        }
     }
 
     private boolean isPosInRang(int position) {
@@ -1105,6 +1119,14 @@ public class WheelPicker extends View implements IWheelPicker, Runnable {
         mItemAlign = align;
         updateItemTextAlign();
         computeDrawnCenter();
+        invalidate();
+    }
+
+    @Override
+    public void setTextEllipsize(int ellipsize) {
+        mTextEllipsize = ellipsize;
+        computeTextSize();
+        requestLayout();
         invalidate();
     }
 

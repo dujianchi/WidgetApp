@@ -32,12 +32,19 @@
         <attr name="widget_wheel_curtain_color" format="color" />
         <attr name="widget_wheel_atmospheric" format="boolean" />
         <attr name="widget_wheel_curved" format="boolean" />
+        <attr name="widget_wheel_font_path" format="string" />
         <attr name="widget_wheel_item_align" format="enum">
             <enum name="center" value="0" />
             <enum name="left" value="1" />
             <enum name="right" value="2" />
         </attr>
-        <attr name="widget_wheel_font_path" format="string" />
+        <attr name="widget_wheel_ellipsize" format="enum">
+            <enum name="none" value="0" />
+            <enum name="end" value="1" />
+            <enum name="marquee" value="2" />
+            <enum name="middle" value="3" />
+            <enum name="start" value="4" />
+        </attr>
     </declare-styleable>
 
 </resources>

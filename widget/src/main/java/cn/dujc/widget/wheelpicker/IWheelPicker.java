@@ -1,7 +1,10 @@
 package cn.dujc.widget.wheelpicker;
 
 import android.graphics.Typeface;
+import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -13,12 +16,47 @@ import java.util.List;
  * @author AigeStudio 2015-12-08
  * @author AigeStudio 2015-12-12
  * @author AigeStudio 2016-06-17
- *         更新项目结构
- *         <p>
- *         New project structure
+ * 更新项目结构
+ * <p>
+ * New project structure
  * @version 1.1.0
  */
 public interface IWheelPicker {
+    /**
+     * 滚动状态标识值
+     *
+     * @see OnWheelChangeListener#onWheelScrollStateChanged(int)
+     */
+    public static final int SCROLL_STATE_IDLE = 0, SCROLL_STATE_DRAGGING = 1,
+            SCROLL_STATE_SCROLLING = 2;
+
+    /**
+     * 数据项对齐方式标识值
+     *
+     * @see #setItemAlign(int)
+     */
+    public static final int ALIGN_CENTER = 0, ALIGN_LEFT = 1, ALIGN_RIGHT = 2;
+
+    /**
+     * 字体的显示效果
+     */
+    public static final int NONE = 0, END = 1, MARQUEE = 2, MIDDLE = 3, START = 4;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ALIGN_CENTER
+            , ALIGN_LEFT
+            , ALIGN_RIGHT
+    })
+    @interface AlignType { }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({NONE
+            , END
+            , MARQUEE
+            , MIDDLE
+            , START
+    })
+    @interface EllipsizeType { }
 
     /**
      * 滚轮选择器Item项被选中时监听接口
@@ -591,7 +629,9 @@ public interface IWheelPicker {
      *              {@link WheelPicker#ALIGN_LEFT}
      *              {@link WheelPicker#ALIGN_RIGHT}
      */
-    void setItemAlign(int align);
+    void setItemAlign(@AlignType int align);
+
+    void setTextEllipsize(@EllipsizeType int ellipsize);
 
     /**
      * 获取数据项文本字体对象
