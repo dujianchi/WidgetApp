@@ -78,7 +78,7 @@ public abstract class AbsCaptureViewImpl implements Callback, ICaptureView {
     }
 
     @Override
-    public int getViewId() {
+    public int _getViewId() {
         return R.layout.widget_zxing_layout_capture;
     }
 

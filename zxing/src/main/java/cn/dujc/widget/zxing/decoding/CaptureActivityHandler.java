@@ -95,7 +95,7 @@ public final class CaptureActivityHandler extends Handler {
         } else if (message.what == R.id.widget_zxing_return_scan_result) {
             Log.d(TAG, "Got return scan result message");
             System.out.println("--------------- " + message.obj);
-            if (mICaptureView.setResult(Activity.RESULT_OK, (Intent) message.obj)) {
+            if (mICaptureView._setResult(Activity.RESULT_OK, (Intent) message.obj)) {
                 mICaptureView.finish();
             } else {
                 mICaptureView._onPause();
