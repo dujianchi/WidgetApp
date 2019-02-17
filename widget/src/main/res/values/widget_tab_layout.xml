@@ -10,7 +10,11 @@
     <color name="widget_tab_text_color_selected">@color/colorPrimary</color>
     <color name="widget_tab_text_color_default">#333333</color>
 
-    <dimen name="widget_indicator_height">7.5dp</dimen>
+    <dimen name="widget_tab_indicator_height">1.5dp</dimen>
+    <dimen name="widget_tab_indicator_margin_left">0dp</dimen>
+    <dimen name="widget_tab_indicator_margin_top">0dp</dimen>
+    <dimen name="widget_tab_indicator_margin_right">0dp</dimen>
+    <dimen name="widget_tab_indicator_margin_bottom">0dp</dimen>
     <color name="widget_tab_indicator_color_selected">@color/colorPrimary</color>
     <color name="widget_tab_indicator_color_default">#00000000</color>
 

@@ -4,34 +4,37 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.dujc.widget.listener.OnDuItemClickListener;
-
-public class TabLayout<T> extends FrameLayout {
+public class TabLayout<T> extends HorizontalScrollView {
 
     private final List<T> mData = new ArrayList<>();
     private final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            updatePosition(position);
+            updatePosition(position, false);
+        }
+    };
+    private final OnLayoutChangeListener mLayoutChangeListener = new OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            Log.d("-------", "TabLayout onLayoutChange");
+            refreshChildWidth();
         }
     };
 
-    private ITabFactory<T> mTabFactory = new DefaultTabFactoryImpl<T>();
-    private RecyclerView mRecyclerView;
-    private TabAdapter<T> mRecyclerAdapter;
+    private final TabFactory<T> mTabFactory = new TabFactory<T>();
+    private final LinearLayout mInnerLayout;
     private ViewPager mViewPager;
-
-    private int mPosition = 0;
+    private ITabWidthCalculator mTabWidthCalculator = new ITabWidthCalculator.FixedImpl();
 
     public TabLayout(@NonNull Context context) {
         this(context, null, 0);
@@ -43,7 +46,16 @@ public class TabLayout<T> extends FrameLayout {
 
     public TabLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        mInnerLayout = new LinearLayout(context);
+
+        setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
+
+        addView(mInnerLayout
+                , new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                        , ViewGroup.LayoutParams.MATCH_PARENT));
+
+        removeOnLayoutChangeListener(mLayoutChangeListener);
+        addOnLayoutChangeListener(mLayoutChangeListener);
     }
 
     @Override
@@ -63,56 +75,40 @@ public class TabLayout<T> extends FrameLayout {
         }
     }
 
-    private void init(Context context) {
-        mRecyclerView = new RecyclerView(context);
-        mRecyclerAdapter = new TabAdapter<T>(mData, mTabFactory);
-        mRecyclerView.setLayoutManager(new LayoutManager(context));
-        mRecyclerView.setAdapter(mRecyclerAdapter);
-        addView(mRecyclerView);
-
-        mRecyclerAdapter.setOnDuItemClickListener(new OnDuItemClickListener() {
-            @Override
-            public void onDuItemClickListener(View itemView, int position) {
-                updatePosition(position);
-            }
-        });
-    }
-
-    public ITabFactory<T> getTabFactory() {
+    public TabFactory<T> getTabFactory() {
         return mTabFactory;
     }
 
-    public void setTabFactory(@NonNull ITabFactory<T> tabFactory) {
-        mTabFactory = tabFactory;
-        mRecyclerAdapter.setTabFactory(tabFactory);
-        mRecyclerAdapter.notifyDataSetChanged();
+    public ITabWidthCalculator getTabWidthCalculator() {
+        return mTabWidthCalculator;
+    }
+
+    public void setTabWidthCalculator(ITabWidthCalculator tabWidthCalculator) {
+        if (tabWidthCalculator != null) mTabWidthCalculator = tabWidthCalculator;
     }
 
     /**
      * 更新选中状态
      */
     private void updateItemState(int position) {
-        if (position >= 0 && position < mRecyclerAdapter.getItemCount()) {
-            mRecyclerAdapter.updateCurrentPosition(position);
+        if (position >= 0 && position < mData.size()) {
+            mTabFactory.update(position, mTabFactory.getCurrent() == position);
         }
     }
 
     /**
      * 更新选中位置，连带viewpager一起
      */
-    private void updatePosition(int position) {
-        if (mPosition != position) {
-            mPosition = position;
-            updateItemState(mPosition);
+    private void updatePosition(int position, boolean viewPagerToo) {
+        updateItemState(position);
 
-            if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getCurrentItem() != mPosition && mPosition >= 0 && mPosition < mViewPager.getAdapter().getCount()) {
-                mViewPager.setCurrentItem(mPosition);
-            }
+        if (viewPagerToo && mViewPager != null
+                && mViewPager.getAdapter() != null
+                && mViewPager.getCurrentItem() != position
+                && position >= 0
+                && position < mViewPager.getAdapter().getCount()) {
+            mViewPager.setCurrentItem(position);
         }
-    }
-
-    public TabAdapter getRecyclerAdapter() {
-        return mRecyclerAdapter;
     }
 
     public void setData(List<T> data) {
@@ -120,7 +116,40 @@ public class TabLayout<T> extends FrameLayout {
         if (data != null) {
             mData.addAll(data);
         }
-        mRecyclerAdapter.notifyDataSetChanged();
+        refreshChildView();
+        updatePosition(0, true);
+    }
+
+    public final void refreshChildView() {
+        final int height = getMeasuredHeight();
+        mInnerLayout.removeAllViews();
+        for (int index = 0, size = mData.size(); index < size; index++) {
+            ITab<T> tab = mTabFactory.get(index);
+            View view = tab.getView(mInnerLayout);
+            mTabFactory.setTabClick(view, index);
+            tab.onTabUpdate(index, mData.get(index));
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                    , height == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : height));
+            if (view.getParent() != null) {
+                ((ViewGroup) view.getParent()).removeView(view);
+            }
+            mInnerLayout.addView(view);
+        }
+    }
+
+    public final void refreshChildWidth() {
+        final int width = getWidth();
+        int original = mInnerLayout.getMeasuredWidth();
+        final int size = mData.size();
+        if (original < width) {
+            for (int index = 0; index < size; index++) {
+                View child = mInnerLayout.getChildAt(index);
+                ViewGroup.LayoutParams params = child.getLayoutParams();
+                params.width = mTabWidthCalculator
+                        .calc(original, width, child.getMeasuredWidth(), size);
+                child.setLayoutParams(params);
+            }
+        }
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -134,31 +163,6 @@ public class TabLayout<T> extends FrameLayout {
     public void setDataAndViewPage(List<T> data, ViewPager viewPager) {
         setData(data);
         setViewPager(viewPager);
-    }
-
-    private static class LayoutManager extends LinearLayoutManager {
-
-        LayoutManager(Context context) {
-            super(context, HORIZONTAL, false);
-        }
-
-        @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-            final int count = getItemCount();
-            //第一个和最后一个都完整地呈现，说明数据可能无法填满屏幕。所以均分每一项的宽度
-            if (findFirstCompletelyVisibleItemPosition() == 0 && findLastCompletelyVisibleItemPosition() == count - 1) {
-                final int width = MeasureSpec.getSize(widthSpec) / count;
-                for (int index = 0; index < count; index++) {
-                    final View child = findViewByPosition(index);
-                    if (child != null) {
-                        final ViewGroup.LayoutParams params = child.getLayoutParams();
-                        params.width = width;
-                        child.setLayoutParams(params);
-                    }
-                }
-            }
-            super.onMeasure(recycler, state, widthSpec, heightSpec);
-        }
     }
 
 }

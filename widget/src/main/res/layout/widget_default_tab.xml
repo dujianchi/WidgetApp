@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/widget_tab_height">
 
     <TextView
         android:id="@+id/dujc_widget_tab_text"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/widget_tab_height"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingLeft="@dimen/widget_tab_padding_left"
@@ -17,10 +17,14 @@
         android:textColor="@color/widget_tab_text_color"
         android:textSize="@dimen/widget_tab_text_size" />
 
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/dujc_widget_indicator_height"-->
-    <!--android:layout_gravity="bottom"-->
-    <!--android:background="@color/widget_tab_indicator_color" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_tab_indicator_height"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/widget_tab_indicator_margin_left"
+        android:layout_marginTop="@dimen/widget_tab_indicator_margin_top"
+        android:layout_marginRight="@dimen/widget_tab_indicator_margin_right"
+        android:layout_marginBottom="@dimen/widget_tab_indicator_margin_bottom"
+        android:background="@drawable/widget_tab_indicator_background" />
 
 </FrameLayout>
