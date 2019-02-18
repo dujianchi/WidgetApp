@@ -46,4 +46,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    public void tab(View view) {
+        startActivity(new Intent(this, TabActivity.class));
+    }
 }

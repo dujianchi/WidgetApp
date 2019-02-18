@@ -1,11 +1,21 @@
 <resources>
 
+    <item name="widget_tab_icon" type="id" />
+    <item name="widget_tab_text" type="id" />
+    <item name="widget_tab_layout" type="id" />
+    <item name="widget_tab_indicator" type="id" />
+
     <dimen name="widget_tab_height">50dp</dimen>
     <dimen name="widget_tab_padding_left">20dp</dimen>
     <dimen name="widget_tab_padding_top">0dp</dimen>
     <dimen name="widget_tab_padding_right">20dp</dimen>
     <dimen name="widget_tab_padding_bottom">0dp</dimen>
     <dimen name="widget_tab_text_size">13.5dp</dimen>
+
+    <dimen name="widget_tab_index_height">56dp</dimen>
+    <dimen name="widget_tab_index_icon_width">20dp</dimen>
+    <dimen name="widget_tab_index_icon_height">20dp</dimen>
+    <dimen name="widget_tab_index_text_size">20dp</dimen>
 
     <color name="widget_tab_text_color_selected">@color/colorPrimary</color>
     <color name="widget_tab_text_color_default">#333333</color>

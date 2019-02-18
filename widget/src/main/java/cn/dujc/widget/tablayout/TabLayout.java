@@ -75,8 +75,13 @@ public class TabLayout<T> extends HorizontalScrollView {
         }
     }
 
+    @NonNull
     public TabFactory<T> getTabFactory() {
         return mTabFactory;
+    }
+
+    public void setInstaller(ITab<T> installer) {
+        if (installer != null) mTabFactory.setInstaller(installer);
     }
 
     public ITabWidthCalculator getTabWidthCalculator() {

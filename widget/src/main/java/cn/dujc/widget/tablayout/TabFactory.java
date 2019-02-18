@@ -1,10 +1,12 @@
 package cn.dujc.widget.tablayout;
 
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.dujc.widget.R;
@@ -31,8 +33,8 @@ public final class TabFactory<T> {
     public void update(int index, boolean selected) {
         ITab iTab = mCachedTabs.get(index);
         if (iTab != null) {
-            if (selected) iTab.onTabSelected();
-            else iTab.onTabUnselected();
+            if (selected) iTab.onTabSelected(index);
+            else iTab.onTabUnselected(index);
         }
         if (selected) mCurrent = index;
     }
@@ -77,7 +79,7 @@ public final class TabFactory<T> {
         public View getView(@NonNull ViewGroup parent) {
             if (mItemView == null) {
                 mItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_default_tab, parent, false);
-                mItemTextView = mItemView.findViewById(R.id.dujc_widget_tab_text);
+                mItemTextView = mItemView.findViewById(R.id.widget_tab_text);
             }
             return mItemView;
         }
@@ -90,16 +92,81 @@ public final class TabFactory<T> {
         }
 
         @Override
-        public void onTabSelected() {
+        public void onTabSelected(int position) {
             if (mItemView != null) {
                 mItemView.setSelected(true);
             }
         }
 
         @Override
-        public void onTabUnselected() {
+        public void onTabUnselected(int position) {
             if (mItemView != null) {
                 mItemView.setSelected(false);
+            }
+        }
+    }
+
+    public static interface IIndexTab {
+        public CharSequence text();
+
+        public int icon();
+    }
+
+    public static class IndexTabImpl implements IIndexTab {
+        private CharSequence mText;
+        private int mIcon;
+
+        public IndexTabImpl(CharSequence text, int icon) {
+            mText = text;
+            mIcon = icon;
+        }
+
+        @Override
+        public CharSequence text() {
+            return mText;
+        }
+
+        @Override
+        public int icon() {
+            return mIcon;
+        }
+
+        public void setText(CharSequence text) {
+            mText = text;
+        }
+
+        public void setIconNormal(int icon) {
+            mIcon = icon;
+        }
+    }
+
+    public static class IndexImpl<T extends IIndexTab> extends TabImpl<T> {
+
+        protected ImageView mItemIconView;
+
+        @Override
+        public ITab<T> create() {
+            return new IndexImpl<>();
+        }
+
+        @NonNull
+        @Override
+        public View getView(@NonNull ViewGroup parent) {
+            if (mItemView == null) {
+                mItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_index_tab, parent, false);
+                mItemTextView = mItemView.findViewById(R.id.widget_tab_text);
+                mItemIconView = mItemView.findViewById(R.id.widget_tab_icon);
+            }
+            return mItemView;
+        }
+
+        @Override
+        public void onTabUpdate(int position, T data) {
+            if (mItemTextView != null) {
+                mItemTextView.setText(data.text());
+            }
+            if (mItemIconView != null) {
+                mItemIconView.setImageResource(data.icon());
             }
         }
     }

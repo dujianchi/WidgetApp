@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".ScanActivity" />
         <activity android:name=".WheelPickerActivity" />
+        <activity android:name=".TabActivity" />
     </application>
 
 </manifest>
