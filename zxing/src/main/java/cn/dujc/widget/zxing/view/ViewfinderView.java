@@ -96,11 +96,6 @@ public final class ViewfinderView extends View {
      */
     private int slideTop;
 
-    /**
-     * 中间滑动线的最底端位置
-     */
-    private int slideBottom;
-
     private Bitmap resultBitmap;
     private final int maskColor;
     private final int resultColor;
@@ -154,7 +149,6 @@ public final class ViewfinderView extends View {
         if (!isFirst) {
             isFirst = true;
             slideTop = frame.top;
-            slideBottom = frame.bottom;
         }
 
         //获取屏幕的宽和高
@@ -236,9 +230,10 @@ public final class ViewfinderView extends View {
             //paint.setTypeface(Typeface.create("System", Typeface.BOLD));
             //		canvas.drawText("将二维码放入框内，即可自动扫描", frame.left, frame.bottom + (float)TEXT_PADDING_TOP *density, paint);
             //上面的计算会使字与扫描框左对齐，而无法居中对齐，特修改如下
-            float allFrontWidth = TEXT_SIZE * density * 15;//15个字的总长度
+            final String text = getContext().getString(R.string.widget_zxing_hint_text);
+            float allFrontWidth = paint.measureText(text);//字的总长度
             float singleRestWidth = (allFrontWidth - frame.right + frame.left) / 2;//一边所多出来的长度
-            canvas.drawText("将二维码放入框内，即可自动扫描", frame.left - singleRestWidth, frame.bottom + (float) TEXT_PADDING_TOP * density, paint);
+            canvas.drawText(text, frame.left - singleRestWidth, frame.bottom + (float) TEXT_PADDING_TOP * density, paint);
 
 
             Collection<ResultPoint> currentPossible = possibleResultPoints;
