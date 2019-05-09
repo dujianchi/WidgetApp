@@ -28,7 +28,7 @@ public interface IVew {
 
         @Override
         public <T extends View> T findViewById(int resId) {
-            return mActivity.findViewById(resId);
+            return (T) mActivity.findViewById(resId);
         }
     }
 }

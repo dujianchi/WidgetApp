@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +68,11 @@ public class DefaultIndicator extends LinearLayout implements DuBannerIndicator 
                 if (mDrawableSelected == null && mDrawableDefault == null) {
                     indicator.setColor(isSelected ? mColorSelected : mColorDefault);
                 } else {
-                    ViewCompat.setBackground(indicator, isSelected ? mDrawableSelected : mDrawableDefault);
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                        indicator.setBackground(isSelected ? mDrawableSelected : mDrawableDefault);
+                    }else{
+                        indicator.setBackgroundDrawable(isSelected ? mDrawableSelected : mDrawableDefault);
+                    }
                 }
                 addView(indicator, params);
             }
